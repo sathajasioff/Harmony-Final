@@ -2,20 +2,23 @@ const jwt = require('jsonwebtoken');
 
 // Admin authentication middleware
 const adminAuth = async (req, res, next) => {
-  const token = req.header('Authorization');
+  const authHeader = req.header('Authorization');
 
-  // Check if token is provided
-  if (!token) {
-    return res.status(401).json({ error: 'Access Denied: No Token Provided' });
+  // Check if Authorization header is provided
+  if (!authHeader) {
+    return res.status(401).json({ success: false, message: 'Access Denied: No Token Provided' });
   }
 
+  // Extract token from Bearer format
+  const token = authHeader.startsWith('Bearer ') ? authHeader.substring(7) : authHeader;
+
   try {
-    // Verify token with secret key from environment variable
-    const verified = await jwt.verify(token, process.env.JWT_SECRET || 'defaultSecretKey'); // Use environment variable for secret key
+    // Verify token with secret key
+    const verified = await jwt.verify(token, 'secretKey');
 
     // Check if the user has the 'admin' role
     if (verified.role !== 'admin') {
-      return res.status(403).json({ error: 'Unauthorized: Admin Access Required' });
+      return res.status(403).json({ success: false, message: 'Unauthorized: Admin Access Required' });
     }
 
     // Attach admin information to request object
@@ -23,7 +26,13 @@ const adminAuth = async (req, res, next) => {
     next();  // Continue to the next middleware or route handler
   } catch (err) {
     // If there's an error during token verification
-    res.status(401).json({ error: 'Invalid or Expired Token' });
+    if (err.name === 'TokenExpiredError') {
+      return res.status(401).json({ success: false, message: 'Token Expired' });
+    }
+    if (err.name === 'JsonWebTokenError') {
+      return res.status(401).json({ success: false, message: 'Invalid Token' });
+    }
+    res.status(401).json({ success: false, message: 'Authentication Failed' });
   }
 };
 

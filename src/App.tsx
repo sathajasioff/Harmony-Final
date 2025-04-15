@@ -20,17 +20,15 @@ import Adminevent from "./pages/adminevent";
 import Branchadd from "./pages/branchadd";
 import Eventadd from "./pages/eventadd";
 import AdminLogin from "./pages/AdminLogin";
-import AdminRoot from './pages/Adminroot';
+import AdminRoot from './pages/AdminRoot';
 import RootAdd from './pages/RootAdd';
+import AdminSettings from './pages/AdminSettings';
 
 import NotFound from "./pages/NotFound";
 import Logout from "./pages/logout";  // Match case exactly
 import ProtectedRoute from './components/ProtectedRoute'; // Import your ProtectedRoute component
 import PublicRoute from "./components/PublicRoute";
 const queryClient = new QueryClient();
-
-
-
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -56,6 +54,7 @@ const App = () => (
           <Route path="/Admin/AdminRoot" element={<ProtectedRoute element={<AdminRoot/>} />} />
           <Route path="/Admin/RootAdd" element={<ProtectedRoute element={<RootAdd/>} />} />
           <Route path="/Admin/eventadd" element={<ProtectedRoute element={<Eventadd />} />} />
+          <Route path="/Admin/adminsettings" element={<ProtectedRoute element={<AdminSettings />} />} />
           <Route path="/Admin/Logout" element={<Logout />} />
       
           {/* Fallback Route */}

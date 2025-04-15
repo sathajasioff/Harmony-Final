@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import Navbar from "@/components/Navbar";
-import { FaUsers, FaEnvelope, FaBuilding, FaRoute, FaChartLine, FaHome, FaAddressBook, FaCodeBranch, FaCalendarAlt, FaSignOutAlt } from "react-icons/fa";
+import { FaUsers, FaEnvelope, FaBuilding, FaRoute, FaChartLine, FaHome, FaAddressBook, FaCodeBranch, FaCalendarAlt, FaSignOutAlt, FaCog } from "react-icons/fa";
 
 interface DashboardStats {
   contactCount: number;
@@ -124,6 +124,18 @@ const Admin = () => {
             >
               <FaCalendarAlt className="mr-3" />
               Event Management
+            </Link>
+
+            <Link 
+              to="/Admin/adminsettings" 
+              className={`flex items-center px-4 py-3 rounded-lg transition-all ${
+                location.pathname === "/Admin/adminsettings" 
+                  ? "bg-blue-600 text-white" 
+                  : "text-gray-300 hover:bg-gray-800 hover:text-white"
+              }`}
+            >
+              <FaCog className="mr-3" />
+              Settings
             </Link>
           </nav>
 
